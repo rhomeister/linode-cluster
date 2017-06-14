@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'securerandom'
+
 module LinodeCluster
   # node factory class
   class NodeFactory
@@ -12,28 +14,28 @@ module LinodeCluster
       @client = client
     end
 
-    def find_datacenter_id
-      client.find_datacenter_id
+    def find_datacenter_id(*args)
+      client.find_datacenter_id(*args)
     end
 
-    def find_plan_id
-      client.find_plan_id
+    def find_plan_id(*args)
+      client.find_plan_id(*args)
     end
 
-    def find_node_by_id
-      client.find_node_by_id
+    def find_node_by_id(*args)
+      client.find_node_by_id(*args)
     end
 
-    def refresh_nodes
-      client.refresh_nodes
+    def refresh_nodes(*args)
+      client.refresh_nodes(*args)
     end
 
-    def find_distribution_id_by_name
-      client.find_distribution_id_by_name
+    def find_distribution_id_by_name(*args)
+      client.find_distribution_id_by_name(*args)
     end
 
-    def find_default_kernel
-      client.find_default_kernel
+    def find_default_kernel(*args)
+      client.find_default_kernel(*args)
     end
 
     def create(attributes)
@@ -54,7 +56,8 @@ module LinodeCluster
           size: 512
         )
 
-        # need to fetch data about the new node to calculate the size of the new disk
+        # need to fetch data about the new node to calculate the size of the new
+        # disk
         refresh_nodes
         new_node = find_node_by_id(result.linodeid)
 
