@@ -67,7 +67,7 @@ module LinodeCluster
           label: DEFAULT_IMAGE_NAME,
           rootpass: SecureRandom.hex,
           size: new_node.totalhd - 512,
-          rootsshkey: File.read('/home/rs06r/.ssh/id_rsa.pub')
+          rootsshkey: File.read("#{ENV.fetch('HOME')}/.ssh/id_rsa.pub")
         )
 
         client.linode.config.create(
