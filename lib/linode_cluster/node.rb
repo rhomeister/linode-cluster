@@ -22,6 +22,7 @@ module LinodeCluster
     end
 
     def size
+      return nil if plan.nil?
       plan.ram
     end
 
