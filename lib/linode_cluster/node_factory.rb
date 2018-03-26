@@ -5,9 +5,6 @@ require 'securerandom'
 module LinodeCluster
   # node factory class
   class NodeFactory
-    # DEFAULT_IMAGE_NAME = 'Ubuntu 16.04 LTS'.freeze
-    DEFAULT_IMAGE_NAME = 'Ubuntu 14.04 LTS'.freeze
-
     attr_accessor :client
 
     def initialize(client)
@@ -42,6 +39,8 @@ module LinodeCluster
       linode_attributes = { datacenterid: find_datacenter_id(attributes[:region]),
                             planid: find_plan_id(attributes[:size]) }
 
+      image_name = attributes[:image_name] || 'Ubuntu 14.04 LTS'.freeze
+
       result = client.linode.create(linode_attributes)
 
       begin
@@ -63,8 +62,8 @@ module LinodeCluster
 
         os_disk = client.linode.disk.createfromdistribution(
           linodeid: result.linodeid,
-          distributionid: find_distribution_id_by_name(DEFAULT_IMAGE_NAME),
-          label: DEFAULT_IMAGE_NAME,
+          distributionid: find_distribution_id_by_name(image_name),
+          label: image_name,
           rootpass: SecureRandom.hex,
           size: new_node.totalhd - 512,
           rootsshkey: File.read("#{ENV.fetch('HOME')}/.ssh/id_rsa.pub")

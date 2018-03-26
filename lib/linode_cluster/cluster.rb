@@ -6,7 +6,7 @@ require 'linode'
 module LinodeCluster
   # Cluster class
   class Cluster
-    attr_accessor :client, :ansible_ssh_user, :app_name, :stage
+    attr_accessor :client, :ansible_ssh_user, :app_name, :stage, :image_name
 
     def initialize(api_key, app_name, stage, options)
       @node_groups = {}
@@ -14,6 +14,7 @@ module LinodeCluster
       @stage = stage || ''
       @client = ClientWrapper.new(Linode.new(api_key: api_key))
       @ansible_ssh_user = options[:ansible_ssh_user] || 'root'
+      @image_name = options[:image_name]
 
       raise 'app name cannot be blank' if app_name.empty?
       raise 'stage cannot be blank' if stage.empty?
@@ -21,7 +22,7 @@ module LinodeCluster
 
     def add_node_group(name, region, size, count, options = {})
       raise "Group with name '#{name}' already exists" if @node_groups[name]
-      @node_groups[name] = NodeGroup.new(name, name_prefix, region, size, count, self, default_options(options))
+      @node_groups[name] = NodeGroup.new(name, name_prefix, region, size, count, image_name, self, default_options(options))
     end
 
     def create!

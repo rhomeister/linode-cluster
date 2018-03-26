@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module LinodeCluster
-  NodeGroup = Struct.new(:name, :group_name_prefix, :region, :size, :count, :cluster, :options) do
+  NodeGroup = Struct.new(:name, :group_name_prefix, :region, :size, :count, :image_name, :cluster, :options) do
     def names
       Array.new(count) { |i| "#{name_prefix}#{i}" }
     end
@@ -51,7 +51,7 @@ module LinodeCluster
 
     def create_node(name)
       puts "Creating #{name}"
-      cluster.create_node(name: name, region: region, size: size, group_name: group_name)
+      cluster.create_node(name: name, region: region, size: size, group_name: group_name, image_name: image_name)
     end
 
     def check_node_specs(node)
